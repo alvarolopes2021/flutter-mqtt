@@ -5,4 +5,6 @@ abstract class IMqttService {
   void disconnect();
   void sendData();
   void readData(StreamController controller);
+
+  late bool willSave;
 }

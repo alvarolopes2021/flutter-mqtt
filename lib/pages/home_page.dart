@@ -30,6 +30,12 @@ class _MyHomePage extends State<MyHomePage> {
         foregroundColor: Colors.white,
         title: Text('Status'),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _clientMqtt.willSave = true;
+        },
+        child: Icon(Icons.add, color: Colors.white,),
+      ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -38,8 +44,8 @@ class _MyHomePage extends State<MyHomePage> {
             StreamBuilder(
               stream: controller.stream,
               builder: (context, snapshot) {
-                if (!snapshot.hasData){
-                  return const CircularProgressIndicator(color: Colors.blue,);
+                if (!snapshot.hasData) {
+                  return Text('nada');
                 }
                 return Container(
                   width: MediaQuery.of(context).size.width * 0.9,

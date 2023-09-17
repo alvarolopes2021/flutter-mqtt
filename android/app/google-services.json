@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1035919489788",
+    "project_id": "pet-control-mqtt",
+    "storage_bucket": "pet-control-mqtt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035919489788:android:1acc2b826e646c48fc3579",
+        "android_client_info": {
+          "package_name": "com.example.flutter_mqtt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1035919489788-ln7av37splq29tss81q1acrln9d812bl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS0UerL8AbxJCFwRKaIjro0jMP9BNHkqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1035919489788-ln7av37splq29tss81q1acrln9d812bl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

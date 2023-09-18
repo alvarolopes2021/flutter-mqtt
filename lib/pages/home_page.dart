@@ -31,10 +31,29 @@ class _MyHomePage extends State<MyHomePage> {
         title: Text('Status'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           _clientMqtt.willSave = true;
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height / 4,
+                  child: const AlertDialog(
+                    title: Text('Leia uma tag'),
+                    content: Center(
+                      child: Text('ACIONE A TAG'),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
         },
-        child: Icon(Icons.add, color: Colors.white,),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -46,6 +65,41 @@ class _MyHomePage extends State<MyHomePage> {
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Text('nada');
+                }
+                if (_clientMqtt.willSave) {
+                  _clientMqtt.willSave = false;
+                  Navigator.pop(context);
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (_clientMqtt.error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Row(
+                            children: [
+                              Icon(Icons.error, color: Colors.red),
+                              Text(
+                                'Erro',
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Row(
+                            children: [
+                              Icon(Icons.check, color: Colors.green),
+                              Text(
+                                'Sucesso',
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  });
                 }
                 return Container(
                   width: MediaQuery.of(context).size.width * 0.9,

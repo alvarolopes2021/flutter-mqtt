@@ -7,4 +7,5 @@ abstract class IMqttService {
   void readData(StreamController controller);
 
   late bool willSave;
+  late bool error;
 }

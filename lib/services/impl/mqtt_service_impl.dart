@@ -8,9 +8,13 @@ import 'package:flutter_mqtt/services/impl/http_service_impl.dart';
 import 'package:flutter_mqtt/services/imqtt_service.dart';
 
 class MqttServiceImpl implements IMqttService {
-  final client = MqttServerClient.withPort('xxx', 'xxx', 8883);
+  final client = MqttServerClient.withPort(
+      'xxx',
+      'xxx',
+      8883);
 
   bool willSave = false;
+  bool error = false;
 
   late IHttpService _httpService;
 
@@ -25,13 +29,12 @@ class MqttServiceImpl implements IMqttService {
       client.secure = true;
       client.securityContext = SecurityContext.defaultContext;
       client.keepAlivePeriod = 20;
-      await client.connect("projetinho", "xxx");
+      await client.connect("xxx", "xxx");
 
       print('con status: ');
       print(client.connectionStatus);
 
-      client.subscribe('PET_CONTROLLER_ETE', MqttQos.atLeastOnce);
-      
+      client.subscribe('xxx', MqttQos.atLeastOnce);
     } catch (e) {
       print('client exception - $e');
       client.disconnect();
@@ -50,23 +53,28 @@ class MqttServiceImpl implements IMqttService {
   }
 
   @override
-  void readData(StreamController controller) {
+  void readData(StreamController controller) async {
     // TODO: implement readData
-    client.updates!.listen((event) {
-      print(event);
+    client.updates!.listen((event) async {
       final recMess = event[0].payload as MqttPublishMessage;
-      final pt =
+
+      final tag =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
-      print(
-          'EXAMPLE::Change notification:: topic is <${event[0].topic}>, payload is <-- $pt -->');
-
-      controller.add(pt);
-
       Map<String, dynamic> data = Map<String, dynamic>();
-      data.addAll({"TAG": pt});
+      data.addAll({"TAG": tag});
 
-      print('');
+      if (willSave) {
+        var response = await _httpService.post(
+            "192.168.15.14:3000", "/api/v1/register", data);
+        if (response == "") {
+          error = true;
+        } else {
+          error = false;
+        }
+      }
+
+      controller.add(tag);
     });
   }
 
